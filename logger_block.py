@@ -33,9 +33,6 @@ class LoggerBlock(Block):
             None
         """
         log_func = self._get_logger()
-        print(log_func)
-        print(self._logger)
-        print(self._logger.name)
         for s in signals:
             log_func(s)
 
