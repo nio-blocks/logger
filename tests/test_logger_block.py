@@ -6,6 +6,8 @@ from nio.util.support.block_test_case import NIOBlockTestCase
 from nio.modules.logging import LoggingModule
 from nio.modules.logging.factory import LoggerFactory
 from nio.configuration.settings import Settings
+from nio.modules.threading import Event
+import logging
 
 
 class LoggerConfiguration(AttributeDict):
@@ -40,34 +42,38 @@ class TestLoggerBlock(NIOBlockTestCase):
         super().setUp()
         Settings.clear()
         LoggingModule.module_init(LoggerConfiguration()['logging'])
-        self.now = datetime.utcnow()
         LoggerFactory._configuration['prefix'] = 'loggertest'
-        self.log_filename = "loggertest.log"
 
-    def tearDown(self):
-        super().tearDown()
-        if path.isfile(self.log_filename):
-            remove(self.log_filename)
 
-    def test_logger_block(self):
-        logger = LoggerBlock()
-        self.configure_block(logger, {
+    def test_logger_not_enabled(self):
+        blk = LoggerBlock()
+        self.configure_block(blk, {
+            'name': 'loggerblock',
+            'log_level': 'INFO',
+            'log_at': 'DEBUG'
+        })
+        self.assertFalse(blk._logger.isEnabledFor(
+            getattr(logging, blk.log_at.name))
+        )
+
+    def test_logger_enabled(self):
+        blk = LoggerBlock()
+        self.configure_block(blk, {
+            'name': 'loggerblock',
+            'log_level': 'DEBUG',
+            'log_at': 'INFO'
+        })
+        self.assertTrue(blk._logger.isEnabledFor(
+            getattr(logging, blk.log_at.name))
+        )
+
+    def test_logger_equal(self):
+        blk = LoggerBlock()
+        self.configure_block(blk, {
             'name': 'loggerblock',
             'log_level': 'DEBUG',
             'log_at': 'DEBUG'
         })
-
-        logger.start()
-
-        signals = ['signal1', 'signal2']
-
-        logger.process_signals(signals)
-
-        self.assertTrue(path.isfile(self.log_filename))
-        with open(self.log_filename, 'r') as log:
-            log_data = log.read()
-            self.assertTrue('signal1' in log_data)
-            self.assertTrue('signal2' in log_data)
-
-        # logger block should not notify any signals
-        self.assert_num_signals_notified(0)
+        self.assertTrue(blk._logger.isEnabledFor(
+            getattr(logging, blk.log_at.name))
+        )
