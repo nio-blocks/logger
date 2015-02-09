@@ -1,12 +1,9 @@
-from os import path, remove
-from datetime import datetime
 from ..logger_block import LoggerBlock
 from nio.util.attribute_dict import AttributeDict
-from nio.util.support.block_test_case import NIOBlockTestCase
+from nioext.util.support.block_test_case import NIOExtBlockTestCase
 from nio.modules.logging import LoggingModule
 from nio.modules.logging.factory import LoggerFactory
 from nio.configuration.settings import Settings
-from nio.modules.threading import Event
 import logging
 
 
@@ -36,12 +33,13 @@ class LoggerConfiguration(AttributeDict):
         })
 
 
-class TestLoggerBlock(NIOBlockTestCase):
+class TestLoggerBlock(NIOExtBlockTestCase):
 
     def setUp(self):
         super().setUp()
         Settings.clear()
-        LoggingModule.module_init(LoggerConfiguration()['logging'])
+        LoggingModule.module_init(LoggerConfiguration()['logging'],
+                                  self.get_module_locations())
         LoggerFactory._configuration['prefix'] = 'loggertest'
 
 
