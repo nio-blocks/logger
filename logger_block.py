@@ -34,7 +34,10 @@ class LoggerBlock(Block):
         """
         log_func = self._get_logger()
         for s in signals:
-            log_func(s)
+            try:
+                log_func(s)
+            except:
+                self._logger.error("Failed to log signal")
 
     def _get_logger(self):
         """ Returns a function that can log, based on the current config.
