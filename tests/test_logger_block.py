@@ -1,6 +1,8 @@
+from unittest.mock import MagicMock
 from ..logger_block import LoggerBlock
 from nio.util.attribute_dict import AttributeDict
 from nioext.util.support.block_test_case import NIOExtBlockTestCase
+from nio.common.signal.base import Signal
 from nio.modules.logging import LoggingModule
 from nio.modules.logging.factory import LoggerFactory
 from nio.configuration.settings import Settings
@@ -75,3 +77,22 @@ class TestLoggerBlock(NIOExtBlockTestCase):
         self.assertTrue(blk._logger.isEnabledFor(
             getattr(logging, blk.log_at.name))
         )
+
+    def test_default_process_signals(self):
+        blk = LoggerBlock()
+        self.configure_block(blk, {})
+        blk._logger = MagicMock()
+        signal = Signal({"I <3": "n.io"})
+        blk.process_signals([signal])
+        blk._logger.info.assert_called_once_with(signal)
+        self.assertEqual(blk._logger.error.call_count, 0)
+
+    def test_exception_on_logging(self):
+        blk = LoggerBlock()
+        self.configure_block(blk, {})
+        blk._logger = MagicMock()
+        blk._logger.info.side_effect = Exception()
+        signal = Signal({"I <3": "n.io"})
+        blk.process_signals([signal])
+        blk._logger.info.assert_called_once_with(signal)
+        self.assertEqual(blk._logger.error.call_count, 1)
