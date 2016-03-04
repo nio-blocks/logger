@@ -1,13 +1,13 @@
-from nio.common.block.base import Block
-from nio.common.command import command
-from nio.common.command.params.string import StringParameter
-from nio.metadata.properties import SelectProperty
-from nio.modules.logging.logger import LogLevel
-from nio.common.discovery import Discoverable, DiscoverableType
+from nio import Block
+from nio.command import command
+from nio.command.params.string import StringParameter
+from nio.properties import SelectProperty
+from nio.util.logging.levels import LogLevel
+from nio.util.discovery import discoverable
 
 
 @command("log", StringParameter("phrase", default='Default phrase'))
-@Discoverable(DiscoverableType.block)
+@discoverable
 class LoggerBlock(Block):
 
     """ Logger block.
@@ -37,7 +37,7 @@ class LoggerBlock(Block):
             try:
                 log_func(s)
             except:
-                self._logger.error("Failed to log signal")
+                self.logger.error("Failed to log signal")
 
     def _get_logger(self):
         """ Returns a function that can log, based on the current config.
@@ -45,12 +45,12 @@ class LoggerBlock(Block):
         This will return a different log level function based on what this
         block is configured to log at.
         """
-        if isinstance(self.log_at, LogLevel):
-            log_str = self.log_at.name.lower()
+        if isinstance(self.log_at(), LogLevel):
+            log_str = self.log_at().name.lower()
         else:
-            log_str = str(self.log_at).lower()
+            log_str = str(self.log_at()).lower()
 
-        return getattr(self._logger, log_str, self._logger.error)
+        return getattr(self.logger, log_str, self.logger.error)
 
     def log(self, phrase="None provided"):
         self._get_logger()("Command log called with phrase: {0}".format(phrase))
