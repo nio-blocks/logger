@@ -1,14 +1,14 @@
 from unittest.mock import MagicMock
-from ..logger_block import LoggerBlock
+from ..logger_block import Logger
 from nio.testing.block_test_case import NIOBlockTestCase
 from nio import Signal
 import logging
 
 
-class TestLoggerBlock(NIOBlockTestCase):
+class TestLogger(NIOBlockTestCase):
 
     def test_logger_not_enabled(self):
-        blk = LoggerBlock()
+        blk = Logger()
         self.configure_block(blk, {
             'name': 'loggerblock',
             'log_level': 'INFO',
@@ -18,7 +18,7 @@ class TestLoggerBlock(NIOBlockTestCase):
             getattr(logging, blk.log_at().name)))
 
     def test_logger_enabled(self):
-        blk = LoggerBlock()
+        blk = Logger()
         self.configure_block(blk, {
             'name': 'loggerblock',
             'log_level': 'DEBUG',
@@ -28,7 +28,7 @@ class TestLoggerBlock(NIOBlockTestCase):
             getattr(logging, blk.log_at().name)))
 
     def test_logger_equal(self):
-        blk = LoggerBlock()
+        blk = Logger()
         self.configure_block(blk, {
             'name': 'loggerblock',
             'log_level': 'DEBUG',
@@ -38,7 +38,7 @@ class TestLoggerBlock(NIOBlockTestCase):
             getattr(logging, blk.log_at().name)))
 
     def test_default_process_signals(self):
-        blk = LoggerBlock()
+        blk = Logger()
         self.configure_block(blk, {})
         blk.logger = MagicMock()
         signal = Signal({"I <3": "n.io"})
@@ -47,7 +47,7 @@ class TestLoggerBlock(NIOBlockTestCase):
         self.assertEqual(blk.logger.error.call_count, 0)
 
     def test_exception_on_logging(self):
-        blk = LoggerBlock()
+        blk = Logger()
         self.configure_block(blk, {})
         blk.logger = MagicMock()
         blk.logger.info.side_effect = Exception()

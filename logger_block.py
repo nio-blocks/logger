@@ -8,7 +8,7 @@ from nio.util.discovery import discoverable
 
 @command("log", StringParameter("phrase", default='Default phrase'))
 @discoverable
-class LoggerBlock(Block):
+class Logger(Block):
 
     """ Logger block.
 
@@ -22,7 +22,7 @@ class LoggerBlock(Block):
     def process_signals(self, signals):
         """ Overridden from the block interface.
 
-        When an instance of LoggerBlock is in the receivers list for some
+        When an instance of Logger is in the receivers list for some
         other block, this method allows the sending block to deliver its
         outgoing signal object to the logger, which logs them individually.
 
