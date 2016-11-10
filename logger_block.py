@@ -1,13 +1,11 @@
-from nio import Block
+from nio.block.base import Block
 from nio.command import command
 from nio.command.params.string import StringParameter
 from nio.properties import SelectProperty
 from nio.util.logging.levels import LogLevel
-from nio.util.discovery import discoverable
 
 
 @command("log", StringParameter("phrase", default='Default phrase'))
-@discoverable
 class Logger(Block):
 
     """ Logger block.
@@ -33,11 +31,21 @@ class Logger(Block):
             None
         """
         log_func = self._get_logger()
-        for s in signals:
+
+        # make it obvious that this was passed a list of signals or just one
+        # by logging a list or not.
+        if len(signals) > 1:
             try:
-                log_func(s)
+                log_func(signals)
             except:
-                self.logger.error("Failed to log signal")
+                self.logger.error("Failed to log list of signals: {}"
+                                  .format(signals))
+        else:
+            for signal in signals:
+                try:
+                    log_func(signal)
+                except:
+                    self.logger.error("Failed to log signal: {}".format(signal))
 
     def _get_logger(self):
         """ Returns a function that can log, based on the current config.
