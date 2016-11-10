@@ -46,6 +46,15 @@ class TestLogger(NIOBlockTestCase):
         blk.logger.info.assert_called_once_with(signal)
         self.assertEqual(blk.logger.error.call_count, 0)
 
+    def test_list_process_signals(self):
+        blk = Logger()
+        self.configure_block(blk, {})
+        blk.logger = MagicMock()
+        signal = Signal({"I <3": "n.io"})
+        blk.process_signals([signal, signal])
+        blk.logger.info.assert_called_once_with([signal, signal])
+        self.assertEqual(blk.logger.error.call_count, 0)
+
     def test_exception_on_logging(self):
         blk = Logger()
         self.configure_block(blk, {})
