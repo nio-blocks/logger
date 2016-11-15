@@ -43,7 +43,7 @@ class TestLogger(NIOBlockTestCase):
         blk.logger = MagicMock()
         signal = Signal({"I <3": "n.io"})
         blk.process_signals([signal])
-        blk.logger.info.assert_called_once_with(signal)
+        blk.logger.info.assert_called_once_with([signal])
         self.assertEqual(blk.logger.error.call_count, 0)
 
     def test_list_process_signals(self):
@@ -62,5 +62,5 @@ class TestLogger(NIOBlockTestCase):
         blk.logger.info.side_effect = Exception()
         signal = Signal({"I <3": "n.io"})
         blk.process_signals([signal])
-        blk.logger.info.assert_called_once_with(signal)
-        self.assertEqual(blk.logger.error.call_count, 1)
+        blk.logger.info.assert_called_once_with([signal])
+        self.assertEqual(blk.logger.exception.call_count, 1)

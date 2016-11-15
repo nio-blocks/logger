@@ -32,20 +32,15 @@ class Logger(Block):
         """
         log_func = self._get_logger()
 
-        # make it obvious that this was passed a list of signals or just one
-        # by logging a list or not.
-        if len(signals) > 1:
-            try:
-                log_func(signals)
-            except:
-                self.logger.error("Failed to log list of signals: {}"
-                                  .format(signals))
-        else:
-            for signal in signals:
-                try:
-                    log_func(signal)
-                except:
-                    self.logger.error("Failed to log signal: {}".format(signal))
+        try:
+            log_func(signals)
+        except:
+            if len(signals) > 1:
+                self.logger.exception("Failed to log list of signals: {}"
+                                      .format(signals))
+            else:
+                self.logger.exception("Failed to log signal: {}"
+                                      .format(signals[0]))
 
     def _get_logger(self):
         """ Returns a function that can log, based on the current config.
