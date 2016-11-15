@@ -35,12 +35,8 @@ class Logger(Block):
         try:
             log_func(signals)
         except:
-            if len(signals) > 1:
-                self.logger.exception("Failed to log list of signals: {}"
-                                      .format(signals))
-            else:
-                self.logger.exception("Failed to log signal: {}"
-                                      .format(signals[0]))
+            self.logger.exception("Failed to log {} signals"
+                                  .format(len(signals)))
 
     def _get_logger(self):
         """ Returns a function that can log, based on the current config.
