@@ -1,0 +1,19 @@
+{
+  "nio/LoggerBlock": {
+    "Output": "None",
+    "Input": "Any list of signals.",
+    "Version": "1.0.0",
+    "Description": "Logs each incoming signal to DEBUG.",
+    "Category": "SignalInspection",
+    "Properties": {},
+    "Dependencies": [
+      "None"
+    ],
+    "Commands": {
+      "log": {
+        "phrase": "\"Default phrase\"",
+        "description": "Logs a DEBUG message `\"Command log called with phrase: {0}\".format(phrase)`."
+      }
+    }
+  }
+}

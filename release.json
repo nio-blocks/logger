@@ -1,0 +1,7 @@
+{
+  "nio/LoggerBlock": {
+    "Version": "1.0.0",
+    "Reference": "github.com/nio-blocks/logger.git@v1.0.0",
+    "Language": "Python"
+  }
+}
