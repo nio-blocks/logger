@@ -1,5 +1,5 @@
 {
-    "nio/LoggerBlock": {
+    "nio/Logger": {
         "Properties": {},
         "Commands": {
             "log": {
