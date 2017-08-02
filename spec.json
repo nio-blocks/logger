@@ -1,20 +1,10 @@
 {
-    "nio/Logger": {
-        "Properties": {},
-        "Commands": {
-            "log": {
-                "phrase": "\"Default phrase\"",
-                "description": "Logs a DEBUG message `\"Command log called with phrase: {0}\".format(phrase)`."
-            }
-        },
-        "Input": {
-            "Description": "Any list of signals."
-        },
-        "Description": "Logs each incoming signal to DEBUG.",
-        "Output": {
-            "Description": "None"
-        },
-        "Version": "1.0.0",
-        "Category": "SignalInspection"
-    }
+  "nio/Logger": {
+    "version": "0.0.1",
+    "description": "",
+    "inputs": {},
+    "outputs": {},
+    "properties": {},
+    "commands": {}
+  }
 }
