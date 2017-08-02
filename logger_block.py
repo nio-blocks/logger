@@ -33,7 +33,7 @@ class Logger(Block):
         log_func = self._get_logger()
 
         try:
-            log_func(signals)
+            log_func([signal.to_dict() for signal in signals])
         except:
             self.logger.exception("Failed to log {} signals"
                                   .format(len(signals)))
