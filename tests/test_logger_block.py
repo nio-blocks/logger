@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, call
 from ..logger_block import Logger
 from nio.testing.block_test_case import NIOBlockTestCase
 from nio import Signal
@@ -43,7 +43,7 @@ class TestLogger(NIOBlockTestCase):
         blk.logger = MagicMock()
         signal = Signal({"I <3": "n.io"})
         blk.process_signals([signal])
-        blk.logger.info.assert_called_once_with([signal.to_dict()])
+        blk.logger.info.assert_called_once_with(signal.to_dict())
         self.assertEqual(blk.logger.error.call_count, 0)
 
     def test_list_process_signals(self):
@@ -52,8 +52,10 @@ class TestLogger(NIOBlockTestCase):
         blk.logger = MagicMock()
         signal = Signal({"I <3": "n.io"})
         blk.process_signals([signal, signal])
-        blk.logger.info.assert_called_once_with([signal.to_dict(),
-                                                 signal.to_dict()])
+        blk.logger.info.assert_has_calls([
+            call(signal.to_dict()),
+            call(signal.to_dict())
+        ])
         self.assertEqual(blk.logger.error.call_count, 0)
 
     def test_exception_on_logging(self):
@@ -63,5 +65,17 @@ class TestLogger(NIOBlockTestCase):
         blk.logger.info.side_effect = Exception()
         signal = Signal({"I <3": "n.io"})
         blk.process_signals([signal])
-        blk.logger.info.assert_called_once_with([signal.to_dict()])
+        blk.logger.info.assert_called_once_with(signal.to_dict())
         self.assertEqual(blk.logger.exception.call_count, 1)
+
+    def test_list_logging(self):
+        blk = Logger()
+        self.configure_block(blk, {"log_as_list": True})
+        blk.logger = MagicMock()
+        signal = Signal({"I <3": "n.io"})
+        blk.process_signals([signal, signal])
+        blk.logger.info.assert_called_once_with([
+            signal.to_dict(),
+            signal.to_dict()
+        ])
+        self.assertEqual(blk.logger.error.call_count, 0)
