@@ -1,13 +1,11 @@
-from nio import Block
+from nio.block.base import Block
 from nio.command import command
 from nio.command.params.string import StringParameter
-from nio.properties import SelectProperty
+from nio.properties import SelectProperty, BoolProperty
 from nio.util.logging.levels import LogLevel
-from nio.util.discovery import discoverable
 
 
 @command("log", StringParameter("phrase", default='Default phrase'))
-@discoverable
 class Logger(Block):
 
     """ Logger block.
@@ -16,8 +14,12 @@ class Logger(Block):
 
     """
 
+    # this is overidden here to change the default log_level from the base
+    # block
     log_level = SelectProperty(LogLevel, title="Log Level", default="INFO")
     log_at = SelectProperty(LogLevel, title="Log At", default="INFO")
+    log_as_list = BoolProperty(title="Log as a list",
+                               default=False, visible=False)
 
     def process_signals(self, signals):
         """ Overridden from the block interface.
@@ -33,11 +35,25 @@ class Logger(Block):
             None
         """
         log_func = self._get_logger()
+
+        if self.log_as_list():
+            self._log_signals_as_list(log_func, signals)
+        else:
+            self._log_signals_sequentially(log_func, signals)
+
+    def _log_signals_as_list(self, log_func, signals):
+        try:
+            log_func([signal.to_dict() for signal in signals])
+        except:
+            self.logger.exception(
+                "Failed to log {} signals".format(len(signals)))
+
+    def _log_signals_sequentially(self, log_func, signals):
         for s in signals:
             try:
-                log_func(s)
+                log_func(s.to_dict())
             except:
-                self.logger.error("Failed to log signal")
+                self.logger.exception("Failed to log signal")
 
     def _get_logger(self):
         """ Returns a function that can log, based on the current config.
