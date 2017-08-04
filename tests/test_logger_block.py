@@ -66,7 +66,7 @@ class TestLogger(NIOBlockTestCase):
         signal = Signal({"I <3": "n.io"})
         blk.process_signals([signal])
         blk.logger.info.assert_called_once_with(signal.to_dict())
-        self.assertEqual(blk.logger.exception.call_count, 1)
+        blk.logger.exception.assert_called_once_with("Failed to log 1 signals")
 
     def test_list_logging(self):
         blk = Logger()
