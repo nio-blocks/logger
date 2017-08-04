@@ -12,7 +12,7 @@ class TestLogger(NIOBlockTestCase):
         self.configure_block(blk, {
             'name': 'loggerblock',
             'log_level': 'INFO',
-            'log_at': 'DEBUG'
+            'log_at': 'DEBUG',
         })
         self.assertFalse(blk.logger.isEnabledFor(
             getattr(logging, blk.log_at().name)))
@@ -22,7 +22,7 @@ class TestLogger(NIOBlockTestCase):
         self.configure_block(blk, {
             'name': 'loggerblock',
             'log_level': 'DEBUG',
-            'log_at': 'INFO'
+            'log_at': 'INFO',
         })
         self.assertTrue(blk.logger.isEnabledFor(
             getattr(logging, blk.log_at().name)))
@@ -32,7 +32,7 @@ class TestLogger(NIOBlockTestCase):
         self.configure_block(blk, {
             'name': 'loggerblock',
             'log_level': 'DEBUG',
-            'log_at': 'DEBUG'
+            'log_at': 'DEBUG',
         })
         self.assertTrue(blk.logger.isEnabledFor(
             getattr(logging, blk.log_at().name)))
@@ -54,7 +54,7 @@ class TestLogger(NIOBlockTestCase):
         blk.process_signals([signal, signal])
         blk.logger.info.assert_has_calls([
             call(signal.to_dict()),
-            call(signal.to_dict())
+            call(signal.to_dict()),
         ])
         self.assertEqual(blk.logger.error.call_count, 0)
 
@@ -66,7 +66,7 @@ class TestLogger(NIOBlockTestCase):
         signal = Signal({"I <3": "n.io"})
         blk.process_signals([signal])
         blk.logger.info.assert_called_once_with(signal.to_dict())
-        blk.logger.exception.assert_called_once_with("Failed to log 1 signals")
+        blk.logger.exception.assert_called_once_with("Failed to log signal")
 
     def test_list_logging(self):
         blk = Logger()
@@ -76,6 +76,6 @@ class TestLogger(NIOBlockTestCase):
         blk.process_signals([signal, signal])
         blk.logger.info.assert_called_once_with([
             signal.to_dict(),
-            signal.to_dict()
+            signal.to_dict(),
         ])
         self.assertEqual(blk.logger.error.call_count, 0)

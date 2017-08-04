@@ -36,18 +36,24 @@ class Logger(Block):
         """
         log_func = self._get_logger()
 
+        if self.log_as_list():
+            self._log_signals_as_list(log_func, signals)
+        else:
+            self._log_signals_sequentially(log_func, signals)
+
+    def _log_signals_as_list(self, log_func, signals):
         try:
-            logged = 0
-            if self.log_as_list():
-                log_func([signal.to_dict() for signal in signals])
-            else:
-                for s in signals:
-                    log_func(s.to_dict())
-                    logged += 1
+            log_func([signal.to_dict() for signal in signals])
         except:
-            self.logger.exception("Failed to log {} signals"
-                                  .format(len(signals) - logged if logged else
-                                          len(signals)))
+            self.logger.exception(
+                "Failed to log {} signals".format(len(signals)))
+
+    def _log_signals_sequentially(self, log_func, signals):
+        for s in signals:
+            try:
+                log_func(s.to_dict())
+            except:
+                self.logger.exception("Failed to log signal")
 
     def _get_logger(self):
         """ Returns a function that can log, based on the current config.
