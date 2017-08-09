@@ -51,7 +51,7 @@ class Logger(Block):
     def _log_signals_sequentially(self, log_func, signals):
         for s in signals:
             try:
-                log_func(s.to_dict())
+                log_func(s)
             except:
                 self.logger.exception("Failed to log signal")
 
