@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from nio.block.base import Block
 from nio.command import command
 from nio.command.params.string import StringParameter
@@ -44,7 +46,8 @@ class Logger(Block):
 
     def _log_signals_as_list(self, log_func, signals):
         try:
-            log_func(str([signal.to_dict() for signal in signals]))
+            log_func(
+                str([self._sort_signal_dict(signal) for signal in signals]))
         except:
             self.logger.exception(
                 "Failed to log {} signals".format(len(signals)))
@@ -52,7 +55,7 @@ class Logger(Block):
     def _log_signals_sequentially(self, log_func, signals):
         for s in signals:
             try:
-                log_func(str(s.to_dict()))
+                log_func(str(self._sort_signal_dict(s)))
             except:
                 self.logger.exception("Failed to log signal")
 
@@ -68,6 +71,14 @@ class Logger(Block):
             log_str = str(self.log_at()).lower()
 
         return getattr(self.logger, log_str, self.logger.error)
+
+    @staticmethod
+    def _sort_signal_dict(signal):
+        """Returns a sorted dictionary representation of a signal, sorted by
+        key.
+        """
+        return OrderedDict(sorted(signal.to_dict().items(),
+                                  key=lambda item: item[0]))
 
     def log(self, phrase="None provided"):
         self._get_logger()("Command log called with phrase: {0}".format(phrase))
