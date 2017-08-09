@@ -1,8 +1,11 @@
+import logging
+import json
 from unittest.mock import MagicMock, call
-from ..logger_block import Logger
+
 from nio.testing.block_test_case import NIOBlockTestCase
 from nio import Signal
-import logging
+
+from ..logger_block import Logger
 
 
 class TestLogger(NIOBlockTestCase):
@@ -43,7 +46,7 @@ class TestLogger(NIOBlockTestCase):
         blk.logger = MagicMock()
         signal = Signal({"I <3": "n.io"})
         blk.process_signals([signal])
-        blk.logger.info.assert_called_once_with(str(signal.to_dict()))
+        blk.logger.info.assert_called_once_with(json.dumps(signal.to_dict()))
         self.assertEqual(blk.logger.error.call_count, 0)
 
     def test_list_process_signals(self):
@@ -53,8 +56,8 @@ class TestLogger(NIOBlockTestCase):
         signal = Signal({"I <3": "n.io"})
         blk.process_signals([signal, signal])
         blk.logger.info.assert_has_calls([
-            call(str(signal.to_dict())),
-            call(str(signal.to_dict())),
+            call(json.dumps(signal.to_dict())),
+            call(json.dumps(signal.to_dict())),
         ])
         self.assertEqual(blk.logger.error.call_count, 0)
 
@@ -65,7 +68,7 @@ class TestLogger(NIOBlockTestCase):
         blk.logger.info.side_effect = Exception()
         signal = Signal({"I <3": "n.io"})
         blk.process_signals([signal])
-        blk.logger.info.assert_called_once_with(str(signal.to_dict()))
+        blk.logger.info.assert_called_once_with(json.dumps(signal.to_dict()))
         blk.logger.exception.assert_called_once_with("Failed to log signal")
 
     def test_list_logging(self):
@@ -74,6 +77,23 @@ class TestLogger(NIOBlockTestCase):
         blk.logger = MagicMock()
         signal = Signal({"I <3": "n.io"})
         blk.process_signals([signal, signal])
-        blk.logger.info.assert_called_once_with("[{0}, {0}]"
-                                                .format(signal.to_dict()))
+        blk.logger.info.assert_called_once_with([json.dumps(signal.to_dict()),
+                                                 json.dumps(signal.to_dict())])
+        self.assertEqual(blk.logger.error.call_count, 0)
+
+    def test_log_sorting(self):
+        blk = Logger()
+        self.configure_block(blk, {})
+        blk.logger = MagicMock()
+        signal1 = Signal({"I <3": "n.io",
+                          "You <3": "n.io",
+                          "We All <3": "n.io"})
+        signal2 = Signal({"You <3": "n.io",
+                          "I <3": "n.io",
+                          "We All <3": "n.io"})
+        blk.process_signals([signal1, signal2])
+        blk.logger.info.assert_has_calls([
+            call(json.dumps(signal1.to_dict(), sort_keys=True)),
+            call(json.dumps(signal2.to_dict(), sort_keys=True)),
+        ])
         self.assertEqual(blk.logger.error.call_count, 0)

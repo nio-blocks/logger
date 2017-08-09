@@ -1,3 +1,5 @@
+import json
+
 from nio.block.base import Block
 from nio.command import command
 from nio.command.params.string import StringParameter
@@ -44,7 +46,9 @@ class Logger(Block):
 
     def _log_signals_as_list(self, log_func, signals):
         try:
-            log_func(str([signal.to_dict() for signal in signals]))
+            log_func([
+                json.dumps(signal.to_dict(), default=str, sort_keys=True)
+                for signal in signals])
         except:
             self.logger.exception(
                 "Failed to log {} signals".format(len(signals)))
@@ -52,7 +56,7 @@ class Logger(Block):
     def _log_signals_sequentially(self, log_func, signals):
         for s in signals:
             try:
-                log_func(str(s.to_dict()))
+                log_func(json.dumps(s.to_dict(), default=str, sort_keys=True))
             except:
                 self.logger.exception("Failed to log signal")
 
