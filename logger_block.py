@@ -1,7 +1,7 @@
 from nio.block.base import Block
 from nio.command import command
 from nio.command.params.string import StringParameter
-from nio.properties import SelectProperty, BoolProperty
+from nio.properties import SelectProperty, BoolProperty, VersionProperty
 from nio.util.logging.levels import LogLevel
 
 
@@ -20,6 +20,7 @@ class Logger(Block):
     log_at = SelectProperty(LogLevel, title="Log At", default="INFO")
     log_as_list = BoolProperty(title="Log as a list",
                                default=False, visible=False)
+    version = VersionProperty("1.0.0")
 
     def process_signals(self, signals):
         """ Overridden from the block interface.
@@ -43,7 +44,7 @@ class Logger(Block):
 
     def _log_signals_as_list(self, log_func, signals):
         try:
-            log_func([signal.to_dict() for signal in signals])
+            log_func(str([signal.to_dict() for signal in signals]))
         except:
             self.logger.exception(
                 "Failed to log {} signals".format(len(signals)))
@@ -51,7 +52,7 @@ class Logger(Block):
     def _log_signals_sequentially(self, log_func, signals):
         for s in signals:
             try:
-                log_func(s.to_dict())
+                log_func(str(s.to_dict()))
             except:
                 self.logger.exception("Failed to log signal")
 
