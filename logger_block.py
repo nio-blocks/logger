@@ -20,7 +20,7 @@ class Logger(Block):
     log_at = SelectProperty(LogLevel, title="Log At", default="INFO")
     log_as_list = BoolProperty(title="Log as a list",
                                default=False, visible=False)
-    version = VersionProperty("0.0.2")
+    version = VersionProperty("1.0.0")
 
     def process_signals(self, signals):
         """ Overridden from the block interface.

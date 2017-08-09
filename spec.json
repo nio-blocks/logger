@@ -1,6 +1,6 @@
 {
   "nio/Logger": {
-    "version": "0.0.2",
+    "version": "1.0.0",
     "description": "",
     "properties": {
       "log_as_list": {

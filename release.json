@@ -1,7 +1,7 @@
 {
   "nio/Logger": {
     "language": "Python",
-    "version": "0.0.2",
-    "reference": "github.com/nio-blocks/logger.git@v0.0.2"
+    "version": "1.0.0",
+    "reference": "github.com/nio-blocks/logger.git@v1.0.0"
   }
 }
