@@ -1,6 +1,6 @@
 import json
 
-from nio.block.base import Block
+from nio import TerminatorBlock
 from nio.command import command
 from nio.command.params.string import StringParameter
 from nio.properties import SelectProperty, BoolProperty, VersionProperty
@@ -8,7 +8,7 @@ from nio.util.logging.levels import LogLevel
 
 
 @command("log", StringParameter("phrase", default='Default phrase'))
-class Logger(Block):
+class Logger(TerminatorBlock):
 
     """ Logger block.
 
