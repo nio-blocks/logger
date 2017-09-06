@@ -2,6 +2,9 @@
   "nio/Logger": {
     "version": "1.0.0",
     "description": "",
+    "categories": [
+      "Signal Inspection"
+    ],
     "properties": {
       "log_as_list": {
         "title": "Log as a list",
