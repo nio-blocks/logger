@@ -1,6 +1,6 @@
 {
   "nio/Logger": {
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Log incoming signals.",
     "categories": [
       "Signal Inspection"

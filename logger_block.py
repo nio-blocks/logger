@@ -22,7 +22,7 @@ class Logger(TerminatorBlock):
     log_at = SelectProperty(LogLevel, title="Log At", default="INFO")
     log_as_list = BoolProperty(title="Log as a list",
                                default=False, visible=False)
-    version = VersionProperty("1.0.0")
+    version = VersionProperty("1.0.1")
 
     def process_signals(self, signals):
         """ Overridden from the block interface.
