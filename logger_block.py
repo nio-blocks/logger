@@ -22,6 +22,8 @@ class Logger(TerminatorBlock):
     log_at = SelectProperty(LogLevel, title="Log At", default="INFO")
     log_as_list = BoolProperty(title="Log as a list",
                                default=False, visible=False)
+    log_hidden_attributes = BoolProperty(title="Log Hidden Attributes",
+                                         default=False)
     version = VersionProperty("1.0.1")
 
     def process_signals(self, signals):
@@ -47,7 +49,7 @@ class Logger(TerminatorBlock):
     def _log_signals_as_list(self, log_func, signals):
         try:
             log_func([
-                json.dumps(signal.to_dict(), default=str, sort_keys=True)
+                json.dumps(signal.to_dict(self.log_hidden_attributes()), default=str, sort_keys=True)
                 for signal in signals])
         except:
             self.logger.exception(
@@ -56,7 +58,7 @@ class Logger(TerminatorBlock):
     def _log_signals_sequentially(self, log_func, signals):
         for s in signals:
             try:
-                log_func(json.dumps(s.to_dict(), default=str, sort_keys=True))
+                log_func(json.dumps(s.to_dict(self.log_hidden_attributes()), default=str, sort_keys=True))
             except:
                 self.logger.exception("Failed to log signal")
 

@@ -97,3 +97,14 @@ class TestLogger(NIOBlockTestCase):
             call(json.dumps(signal2.to_dict(), sort_keys=True)),
         ])
         self.assertEqual(blk.logger.error.call_count, 0)
+
+    def test_log_hidden_attributes(self):
+        blk = Logger()
+        self.configure_block(blk, {"log_hidden_attributes": True})
+        blk.logger = MagicMock()
+        signal = Signal({"_hidden": "hidden!", "not_hidden": "not hidden!"})
+        blk.process_signals([signal])
+        blk.logger.info.assert_called_once_with(json.dumps(signal.to_dict(True),
+                                                           sort_keys=True))
+        self.assertEqual(blk.logger.error.call_count, 0)
+        self.assertEqual(len(signal.to_dict(True)), 2)
