@@ -1,7 +1,7 @@
 {
   "nio/Logger": {
     "version": "1.1.0",
-    "description": "Log incoming signals.",
+    "description": "The Logger blocks outputs incoming signals into the terminal and system designer's logger panel.",
     "categories": [
       "Signal Inspection"
     ],
@@ -9,34 +9,38 @@
       "log_as_list": {
         "title": "Log as a list",
         "type": "BoolType",
-        "description": "Whether to log incoming signals as lists. The default behavior is to log lists of incoming signals one at a time. Setting this to True allows one to see if the block received multiple signals at once or multiple signals sequentially.",
+        "description": "Hidden property defaulted to `False`. Whether to log incoming signals as lists. The default behavior is to log lists of incoming signals one at a time. Setting this to True allows one to see if the block received multiple signals at once or multiple signals sequentially.",
         "default": false
       },
       "log_at": {
         "title": "Log At",
         "type": "SelectType",
-        "description": "The log level to log outgoing messages at. Default is INFO.",
+        "description": "The log level that incoming signals show up as in the logs. Default is INFO.",
         "default": "INFO"
       },
-      "log_level": {
-        "title": "Log Level",
-        "type": "SelectType",
-        "description": "Sets the log level for the block. Default is INFO.",
-        "default": "INFO"
+      "log_hidden_attributes": {
+        "title": "Log Hidden Attributes",
+        "type": "BoolType",
+        "description": "If `True` (checked) the log output will include hidden (private) attributes denoted by a leading underscore (eg: `_signal_attribute`.",
+        "default": false
       }
     },
-    "inputs": {},
+    "inputs": {
+      "default": {
+        "description": "Any list of signals."
+      }
+    },
     "outputs": {},
     "commands": {
       "log": {
+        "description": "Force the logger block to log the configured phrase.",
         "params": {
           "phrase": {
-            "default": "Default phrase",
             "title": "phrase",
+            "default": "Default phrase",
             "allow_none": false
           }
-        },
-        "description": ""
+        }
       }
     }
   }
