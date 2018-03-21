@@ -77,8 +77,8 @@ class TestLogger(NIOBlockTestCase):
         blk.logger = MagicMock()
         signal = Signal({"I <3": "n.io"})
         blk.process_signals([signal, signal])
-        blk.logger.info.assert_called_once_with([json.dumps(signal.to_dict()),
-                                                 json.dumps(signal.to_dict())])
+        blk.logger.info.assert_called_once_with(
+            '[{"I <3": "n.io"}, {"I <3": "n.io"}]')
         self.assertEqual(blk.logger.error.call_count, 0)
 
     def test_log_sorting(self):
