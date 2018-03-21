@@ -20,8 +20,7 @@ class Logger(TerminatorBlock):
     # block
     log_level = SelectProperty(LogLevel, title="Log Level", default="INFO")
     log_at = SelectProperty(LogLevel, title="Log At", default="INFO")
-    log_as_list = BoolProperty(title="Log as a list",
-                               default=False, visible=False)
+    log_as_list = BoolProperty(title="Log as a List", default=False)
     log_hidden_attributes = BoolProperty(title="Log Hidden Attributes",
                                          default=False)
     version = VersionProperty("1.1.1")
