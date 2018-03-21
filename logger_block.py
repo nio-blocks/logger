@@ -47,9 +47,9 @@ class Logger(TerminatorBlock):
 
     def _log_signals_as_list(self, log_func, signals):
         try:
-            log_func([
+            log_func('[{}]'.format(', '.join([
                 json.dumps(signal.to_dict(self.log_hidden_attributes()), default=str, sort_keys=True)
-                for signal in signals])
+                for signal in signals])))
         except:
             self.logger.exception(
                 "Failed to log {} signals".format(len(signals)))
