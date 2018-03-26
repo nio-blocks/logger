@@ -1,6 +1,6 @@
 {
   "nio/Logger": {
-    "version": "1.1.1",
+    "version": "1.2.0",
     "description": "The _Logger_ block sends incoming signals to display in the terminal and System Designer's logger panel.",
     "categories": [
       "Signal Inspection"
@@ -10,7 +10,7 @@
         "title": "Log as a List",
         "type": "BoolType",
         "description": "Hidden property to log incoming signals as lists. Default is `True` and signals are grouped inside their list. Setting this to `False` logs one signal at a time.",
-        "default": false
+        "default": true
       },
       "log_at": {
         "title": "Log At",
@@ -33,14 +33,14 @@
     "outputs": {},
     "commands": {
       "log": {
-        "description": "Force the logger block to log the configured phrase.",
         "params": {
           "phrase": {
-            "default": "Default phrase",
+            "allow_none": false,
             "title": "phrase",
-            "allow_none": false
+            "default": "Default phrase"
           }
-        }
+        },
+        "description": "Force the logger block to log the configured phrase."
       }
     }
   }
