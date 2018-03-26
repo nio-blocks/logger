@@ -20,7 +20,8 @@ class Logger(TerminatorBlock):
     # block
     log_level = SelectProperty(LogLevel, title="Log Level", default="INFO")
     log_at = SelectProperty(LogLevel, title="Log At", default="INFO")
-    log_as_list = BoolProperty(title="Log as a List", default=False)
+    log_as_list = BoolProperty(title="Log as a List",
+                               default=True, visible=False)
     log_hidden_attributes = BoolProperty(title="Log Hidden Attributes",
                                          default=False)
     version = VersionProperty("1.1.1")
@@ -30,10 +31,10 @@ class Logger(TerminatorBlock):
 
         When an instance of Logger is in the receivers list for some
         other block, this method allows the sending block to deliver its
-        outgoing signal object to the logger, which logs them individually.
+        outgoing signal object to the logger, which logs them as a list.
 
         Args:
-            signals (list of Signal): a list of signals to be logged.
+            signals (list of Signals): a list of signals to be logged.
 
         Returns:
             None
