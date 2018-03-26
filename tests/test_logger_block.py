@@ -46,12 +46,12 @@ class TestLogger(NIOBlockTestCase):
         blk.logger = MagicMock()
         signal = Signal({"I <3": "n.io"})
         blk.process_signals([signal])
-        blk.logger.info.assert_called_once_with(json.dumps(signal.to_dict()))
+        blk.logger.info.assert_called_once_with('[{}]'.format(json.dumps(signal.to_dict())))
         self.assertEqual(blk.logger.error.call_count, 0)
 
     def test_list_process_signals(self):
         blk = Logger()
-        self.configure_block(blk, {})
+        self.configure_block(blk, {"log_as_list": False})
         blk.logger = MagicMock()
         signal = Signal({"I <3": "n.io"})
         blk.process_signals([signal, signal])
@@ -63,7 +63,7 @@ class TestLogger(NIOBlockTestCase):
 
     def test_exception_on_logging(self):
         blk = Logger()
-        self.configure_block(blk, {})
+        self.configure_block(blk, {"log_as_list": False})
         blk.logger = MagicMock()
         blk.logger.info.side_effect = Exception()
         signal = Signal({"I <3": "n.io"})
@@ -77,12 +77,13 @@ class TestLogger(NIOBlockTestCase):
         blk.logger = MagicMock()
         signal = Signal({"I <3": "n.io"})
         blk.process_signals([signal, signal])
-        blk.logger.info.assert_called_once_with([json.dumps(signal.to_dict()),
-                                                 json.dumps(signal.to_dict())])
+        blk.logger.info.assert_called_once_with(
+            '[{"I <3": "n.io"}, {"I <3": "n.io"}]')
         self.assertEqual(blk.logger.error.call_count, 0)
 
     def test_log_sorting(self):
         blk = Logger()
+        self.configure_block(blk, {"log_as_list": False})
         self.configure_block(blk, {})
         blk.logger = MagicMock()
         signal1 = Signal({"I <3": "n.io",
@@ -104,7 +105,7 @@ class TestLogger(NIOBlockTestCase):
         blk.logger = MagicMock()
         signal = Signal({"_hidden": "hidden!", "not_hidden": "not hidden!"})
         blk.process_signals([signal])
-        blk.logger.info.assert_called_once_with(json.dumps(signal.to_dict(True),
-                                                           sort_keys=True))
+        blk.logger.info.assert_called_once_with('[{}]'.format(json.dumps(signal.to_dict(True),
+                                                           sort_keys=True)))
         self.assertEqual(blk.logger.error.call_count, 0)
         self.assertEqual(len(signal.to_dict(True)), 2)

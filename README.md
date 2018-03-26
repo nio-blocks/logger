@@ -1,12 +1,12 @@
 Logger
 ======
-The Logger blocks outputs incoming signals into the terminal and system designer's logger panel.
+The _Logger_ block sends incoming signals to display in the terminal and System Designer's logger panel.
 
 Properties
 ----------
-- **log_as_list**: Hidden property defaulted to `False`. Whether to log incoming signals as lists. The default behavior is to log lists of incoming signals one at a time. Setting this to True allows one to see if the block received multiple signals at once or multiple signals sequentially.
-- **log_at**: The log level that incoming signals show up as in the logs. Default is INFO.
-- **log_hidden_attributes**: If `True` (checked) the log output will include hidden (private) attributes denoted by a leading underscore (eg: `_signal_attribute`.
+- **log_as_list**: Hidden property to log incoming signals as lists. Default is `True` and signals are grouped inside their list. Setting this to `False` logs one signal at a time.
+- **log_at**: The log level that determines the rank of log messages to display. Default is INFO.
+- **log_hidden_attributes**: If `True` (checked) the log output will include hidden (private) attributes denoted by a leading underscore (e.g., `_signal_attribute`.)
 
 Inputs
 ------
