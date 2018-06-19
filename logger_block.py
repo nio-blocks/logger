@@ -18,14 +18,12 @@ class Logger(TerminatorBlock):
 
     # this is overidden here to change the default log_level from the base
     # block
-    log_level = SelectProperty(LogLevel, title="Log Level", default="INFO",
-                               advanced=True, order=0)
     log_at = SelectProperty(LogLevel, title="Log At", default="INFO",
-                               advanced=True, order=1)
+                               order=0)
     log_as_list = BoolProperty(title="Log as a List", default=True,
-                               advanced=True, order=2)
+                               advanced=True, order=1)
     log_hidden_attributes = BoolProperty(title="Log Hidden Attributes",
-                               default=False, advanced=True, order=3)
+                               default=False, advanced=True, order=2)
     version = VersionProperty("1.2.0")
 
     def process_signals(self, signals):
