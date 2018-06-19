@@ -9,7 +9,7 @@
       "log_as_list": {
         "title": "Log as a List",
         "type": "BoolType",
-        "description": "Hidden property to log incoming signals as lists. Default is `True` and signals are grouped inside their list. Setting this to `False` logs one signal at a time.",
+        "description": "Log incoming signals as lists. Default is `True` and signals are grouped inside their list. Setting this to `False` logs one signal at a time.",
         "default": true
       },
       "log_at": {
