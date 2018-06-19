@@ -24,7 +24,7 @@ class Logger(TerminatorBlock):
                                advanced=True, order=1)
     log_hidden_attributes = BoolProperty(title="Log Hidden Attributes",
                                default=False, advanced=True, order=2)
-    version = VersionProperty("1.2.0")
+    version = VersionProperty("1.3.0")
 
     def process_signals(self, signals):
         """ Overridden from the block interface.
