@@ -2,6 +2,6 @@
   "nio/Logger": {
     "language": "Python",
     "url": "git://github.com/nio-blocks/logger.git",
-    "version": "1.3.0"
+    "version": "1.3.1"
   }
 }

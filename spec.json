@@ -1,6 +1,6 @@
 {
   "nio/Logger": {
-    "version": "1.3.0",
+    "version": "1.3.1",
     "description": "The _Logger_ block sends incoming signals to display in the terminal and System Designer's logger panel.",
     "categories": [
       "Signal Inspection"
