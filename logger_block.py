@@ -18,6 +18,8 @@ class Logger(TerminatorBlock):
 
     # this is overidden here to change the default log_level from the base
     # block
+    log_level = SelectProperty(LogLevel, title="Log Level", default="INFO",
+                               advanced=True, order=0)
     log_at = SelectProperty(LogLevel, title="Log At", default="INFO",
                                order=0)
     log_as_list = BoolProperty(title="Log as a List", default=True,
