@@ -1,7 +1,7 @@
 Logger
 ======
 
-Blocks in this collection
+Blocks in this Collection
 ---
 [Logger](docs/logger.md)
 

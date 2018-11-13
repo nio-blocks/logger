@@ -5,7 +5,7 @@
     "categories": [
       "Signal Inspection"
     ],
-    "tags": "log print view debug troubleshoot info information",
+    "tags": "log print view debug troubleshoot troubleshooting info information console show see warning exception errors",
     "from_readme": "docs/logger.md",
     "from_python": "logger_block.Logger"
   }
