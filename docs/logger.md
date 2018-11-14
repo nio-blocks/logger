@@ -1,6 +1,6 @@
 Logger
 ======
-The _Logger_ block sends incoming signals to display in the service log file and System Designer's logger panel.
+The _Logger_ block sends incoming signals to display in the service log file and System Designer's logger panel. 
 Properties
 ---
 - **Log At**: The log level that determines the rank of log messages to display. Default is INFO.
@@ -13,4 +13,3 @@ Advanced Properties
 Commands
 ---
 - **log**: Force the logger block to log the configured phrase.
-
